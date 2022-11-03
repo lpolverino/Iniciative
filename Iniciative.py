@@ -20,7 +20,7 @@ class Iniciativa:
         print("TIRA INICIATIVA")
     
     def agregar(self, roll, creature):
-        creature = (roll, creature)
+        creature = (roll, Creature(creature))
         if len(self.list) != 0:
             current_turn = self.list[self.traker]
         else:
@@ -33,21 +33,27 @@ class Iniciativa:
         self.traker = self.list.index(current_turn)
 
     def eliminar(self,creature):
-        idx = [tup[1].name for tup in self.list].index(creature) #habra forma mas facil?
-        creature = self.list[idx]
-        if creature[0]< self.list[self.traker][0]:
-            self.traker -= 1
-        if idx != len(self.list) -1:
-            self.list =  self.list[:idx] + self.list[idx+1:]
-        elif idx == len(self.list) -1:
-            self.list = self.list[:idx]
-        else:
-            print(f"{creature.name} was not found")
+        try:
+            idx = [tup[1].name for tup in self.list].index(creature) #habra forma mas facil?
+            creature = self.list[idx]
+            if creature[0]< self.list[self.traker][0]:
+                self.traker -= 1
+            if idx != len(self.list) -1:
+                self.list =  self.list[:idx] + self.list[idx+1:]
+            elif idx == len(self.list) -1:
+                self.list = self.list[:idx]
+            else:
+                print(f"{creature.name} was not found")
+        except:
+            print(f"No se puede sacar a {creature}")
 
     def insertCondition(self, creature_name, condition, time):
-        idx = [tup[1].name for tup in self.list].index(creature_name)
-        creature = self.list[idx][1]
-        creature.agCondition(condition, time)
+        try:
+            idx = [tup[1].name for tup in self.list].index(creature_name)
+            creature = self.list[idx][1]
+            creature.agCondition(condition, time)
+        except:
+            print(f"no se puede modificar a {creature_name}")
     
     def show_turn(self):
         print(f"{self.list[self.traker]}")
